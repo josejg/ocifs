@@ -443,7 +443,7 @@ class OCIFileSystem(AbstractFileSystem):
             new_files = []
             for f in files:
                 new_files.append(
-                    CaseInsensitiveDict(
+                    (
                         {
                             "size": 0,
                             "type": "directory",
@@ -495,7 +495,7 @@ class OCIFileSystem(AbstractFileSystem):
                         continue
                     new_key = "/".join([full_bucket_name, f.name])
                     formatted_files.append(
-                        CaseInsensitiveDict(
+                        (
                             {
                                 "name": new_key,
                                 "type": "file",
@@ -513,7 +513,7 @@ class OCIFileSystem(AbstractFileSystem):
                     folder_name = p[:-1] if p.endswith("/") else p
                     full_folder_name = os.path.join(full_bucket_name, folder_name)
                     formatted_files.append(
-                        CaseInsensitiveDict(
+                        (
                             {
                                 "name": full_folder_name,
                                 "type": "directory",
@@ -784,7 +784,7 @@ class OCIFileSystem(AbstractFileSystem):
         """
         bucket, namespace, key = self.split_path(path)
         path = _build_full_path(bucket=bucket, namespace=namespace, key=key, **kwargs)
-        generic_dir = CaseInsensitiveDict(
+        generic_dir = (
             {"name": path, "size": 0, "type": "directory"}
         )
         # self.invalidate_cache(path=path)
@@ -813,7 +813,7 @@ class OCIFileSystem(AbstractFileSystem):
                     except Exception as e:
                         raise translate_oci_error(e) from e
                 raise translate_oci_error(e) from e
-            return CaseInsensitiveDict(
+            return (
                 {
                     "name": path,
                     "type": "file",
@@ -836,7 +836,7 @@ class OCIFileSystem(AbstractFileSystem):
                 ).headers
             except ServiceError as e:
                 raise translate_oci_error(e) from e
-            bucket_dict = CaseInsensitiveDict({"etag": bucket_data["etag"]})
+            bucket_dict = ({"etag": bucket_data["etag"]})
             bucket_dict.update(generic_dir)
             return bucket_dict
         try:
