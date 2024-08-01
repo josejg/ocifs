@@ -174,6 +174,9 @@ class OCIFileSystem(AbstractFileSystem):
         self.oci_additional_kwargs = oci_additional_kwargs or dict()
         self.config_kwargs = config_kwargs or dict()
         self.config = config or dict()
+        if 'OCI_CONFIG_FILE' in os.environ:
+            self.config = os.environ['OCI_CONFIG_FILE']
+
         logger.debug(
             f"External Object Storage Client is being set up using the config "
             f"passed in:: {self.config} "
